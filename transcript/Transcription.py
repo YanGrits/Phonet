@@ -278,14 +278,14 @@ def transcript_the_text_phonetic(the_text: str, pickedLetters: str) -> str:
             if text[symb] in semisoft:
                 text = text.replace(
                     text[symb] + text[symb + 1], text[symb] + "’" + 'і')
-    for symb in range(len(text) - 1):
-        if text[symb + 1] == ' ' and text[symb + 2] == 'і':
-            if text[symb] in soft:
-                text = text.replace(
-                    text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
-            if text[symb] in semisoft:
-                text = text.replace(
-                    text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
+    #for symb in range(len(text) - 1):
+        #if text[symb + 1] == ' ' and text[symb + 2] == 'і':
+            #if text[symb] in soft:
+                #text = text.replace(
+                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
+            #if text[symb] in semisoft:
+                #text = text.replace(
+                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
         #if text[symb + 1] == 'j':
             #if text[symb] in soft:
                 #text = text.replace(

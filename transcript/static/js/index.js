@@ -10,6 +10,7 @@ $(function initListeners() {
   const $letterChooserLabel = $("#letterChooserLabel");
   const $letterChooser = $("#letterChooser");
   const $modePicker = $("#transcriptionMode");
+  const $clearUserText = $("#clearUserText");
 
   const vowels = ["а", "о", "е", "и", "у", "і", "я", "ю", "є", "ї"];
 
@@ -25,6 +26,7 @@ $(function initListeners() {
     $letterChooserLabel.addClass("d-none");
 
     $userTextInput.show();
+    $clearUserText.show();
     $letterChooser.addClass("d-none");
 
     pickedLetters = [];
@@ -38,6 +40,7 @@ $(function initListeners() {
     if (userText.length !== 0) {
       $nextStepBtn.hide();
       $textInpuitLabel.hide();
+      $clearUserText.hide();
       $submitBtn.removeClass("d-none");
       $letterChooserLabel.removeClass("d-none");
       $prevStepBtn.removeClass("d-none");
@@ -50,7 +53,7 @@ $(function initListeners() {
           $letterChooser.append("<br/>");
         } else if (letter.trim().length === 0) {
           $letterChooser.append("&nbsp;");
-        } else if (vowels.includes(letter)) {
+        } else if (vowels.includes(letter.toLowerCase())) {
           $letterChooser.append(
             `<span data-letterid="${index}" class="letter-chooser__letter">${letter}</span>`
           );
@@ -113,5 +116,10 @@ $(function initListeners() {
 
   $clearResults.on("click", function clearResults() {
     $transriptionResults.val("");
+  });
+
+  $clearUserText.on("click", function clearText(event) {
+    event.preventDefault();
+    $userTextInput.val("");
   });
 });

@@ -49,6 +49,7 @@ textarea#transcriptionResult:disabled {
     font-weight: bold;
 }
 
-.font-bold {
-    font-weight: bold;
+.btn-block {
+    box-sizing: border-box;
+    width     : 100%;
 }

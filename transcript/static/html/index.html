@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -16,14 +16,20 @@
           <div class="col-12 my-md-0 my-4 text-center">
             <h1>Транскриптор тексту</h1>
             <div>
-              <label class="font-bold" for="transcriptionMode"
-                >Режим:
-              </label>
+              <label class="fw-bold" for="transcriptionMode">Режим: </label>
               <select id="transcriptionMode" aria-label="Режим">
                 <option value="phonetic" selected>Фонетична</option>
                 <option value="phonematic">Фонематична</option>
               </select>
             </div>
+            <button
+              type="button"
+              class="btn btn-primary mt-3"
+              data-bs-toggle="modal"
+              data-bs-target="#transcriptorInfo"
+            >
+              Довідка
+            </button>
           </div>
           <div class="col-md-6 col-12">
             <div class="card">
@@ -33,13 +39,13 @@
                     <label
                       id="textInputLabel"
                       for="textInput"
-                      class="form-label card-title font-weight-bold"
+                      class="form-label card-title fw-bold"
                       >Текст</label
                     >
                     <label
                       id="letterChooserLabel"
                       for="textInput"
-                      class="form-label card-title d-none font-weight-bold"
+                      class="form-label card-title d-none fw-bold"
                       >Позначити наголоси (опціонально)</label
                     >
                     <textarea
@@ -55,13 +61,26 @@
                       aria-describedby="letterChooserLabel"
                     ></div>
                   </div>
-                  <button
-                    id="nextStepBtn"
-                    class="btn btn-success btn-block"
-                    title="Перейти на наступний крок"
-                  >
-                    ОК
-                  </button>
+                  <div class="row">
+                    <div class="col-md-6 col-12">
+                      <button
+                        id="clearUserText"
+                        class="btn btn-primary btn-block"
+                        title="Перейти на наступний крок"
+                      >
+                        Очистити
+                      </button>
+                    </div>
+                    <div class="col-md-6 col-12">
+                      <button
+                        id="nextStepBtn"
+                        class="btn btn-success btn-block mt-2 mt-md-0"
+                        title="Перейти на наступний крок"
+                      >
+                        ОК
+                      </button>
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-md-6 col-12">
                       <button
@@ -93,7 +112,7 @@
                 <label
                   id="resultLabel"
                   for="transcriptionResult"
-                  class="form-label card-title font-weight-bold"
+                  class="form-label card-title fw-bold"
                   >Транскрипція</label
                 >
                 <textarea
@@ -120,6 +139,48 @@
     <footer class="mt-4">
       <span> &copy; 2021 </span>
     </footer>
+    <div
+      class="modal fade"
+      id="transcriptorInfo"
+      tabindex="-1"
+      aria-labelledby="Transcriptor Info"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Довідка</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
+              pariatur dolore repellendus laboriosam, eligendi dolor adipisci
+              harum ad sequi, quisquam numquam facilis doloribus libero ut,
+              velit doloremque nisi fugit? Ratione! Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Eveniet, reiciendis magnam. Culpa
+              possimus sed provident ullam impedit ut voluptas, alias voluptate
+              quia, id fugit neque, blanditiis recusandae ducimus eaque
+              consequuntur.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success btn-block"
+              data-bs-dismiss="modal"
+            >
+              ОК
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="/static/vendors/jquery-3.6.0.min.js"></script>
     <script src="/static/vendors/bootstrap.bundle.min.js"></script>
     <script src="/static/js/index.js"></script>
