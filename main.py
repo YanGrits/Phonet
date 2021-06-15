@@ -1,7 +1,8 @@
-from flask import Flask, send_from_directory, request, jsonify
 from os import path
-from Transcription import transcript_the_text_phonetic
-from Transcription2 import transcript_the_text_phonematic
+from flask import Flask, send_from_directory, request, jsonify
+import Transcription2
+import Transcription
+
 
 app = Flask(__name__)
 
@@ -26,11 +27,10 @@ def postTransript() -> str:
     print(pickedLetters)
 
     if transcriptionMode == 'phonetic':
-        result = transcript_the_text_phonetic(text, pickedLetters)
+        result = Transcription.transcript_the_text_phonetic(
+            text, pickedLetters)
     else:
-        result = transcript_the_text_phonematic(text, pickedLetters)
+        result = Transcription2.transcript_the_text_phonematic(
+            text, pickedLetters)
 
     return jsonify(transcriptedText=result)
-
-
-app.run(port=5050, debug=True)
