@@ -42,7 +42,7 @@ def transcript_the_text_phonetic(the_text: str, pickedLetters: str) -> str:
                     text[index] = text.replace(text[index], 'á')
                 if text[index] == 'о':
                     text[index] = text.replace(text[index], 'ó')
-                
+
         text = listToString(text)
         print(text)
 
@@ -158,7 +158,7 @@ def transcript_the_text_phonetic(the_text: str, pickedLetters: str) -> str:
 
         # ї, щ
         if text[symb] == 'щ':
-            text = text.replace(text[symb], 'ш' + 'ч')
+            text = text.replace(text[symb], 'ш' + 'к')
         if text[symb] == 'ї':
             text = text.replace(text[symb], 'j' + 'і')
             if text[symb - 1] == "'":
