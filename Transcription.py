@@ -1,11 +1,10 @@
 import re
-from simple_colors import *
-from colour import Color
 from typing import List
 
 marks = ['\n', '/', ' ']
 preffs = ['ві', 'пі', 'на', 'пере', 'сере']
 vowels = ['і', 'и', 'n', 'ĩ', 'ũ', 'а', 'о', 'у', 'е', 'ǝ', 'ã', 'õ', 'ỹ', 'ẽ', 'ǝ̃']
+stress =                ['í', 'и́́', 'á', 'ó', 'у́', '́é']
 cons = ['р', 'д', 'ӡ', 'з', 'л', 'н', 'с', 'т', 'ц', 'б', 'в', 'г',
         'ґ', 'Ԫ', 'ж', 'к', 'м', 'п', 'ф', 'х', 'ч', 'ш', 'j', 'й']
 soft = ['р', 'д', 'л', 'н', 'т', 'ӡ', 'з', 'с', 'ц']
@@ -39,7 +38,11 @@ def transcript_the_text_phonetic(the_text: str, pickedLetters: str) -> str:
         text = Convert(text)
         for (index, letter) in enumerate(text):
             if index in stress:
-                text[index] = text[index].upper()
+                if text[index] == 'а':
+                    text[index] = text.replace(text[index], 'á')
+                if text[index] == 'о':
+                    text[index] = text.replace(text[index], 'ó')
+                
         text = listToString(text)
         print(text)
 
@@ -279,41 +282,13 @@ def transcript_the_text_phonetic(the_text: str, pickedLetters: str) -> str:
                 text = text.replace(
                     text[symb] + text[symb + 1], text[symb] + "’" + 'і')
     #for symb in range(len(text) - 1):
-        #if text[symb + 1] == ' ' and text[symb + 2] == 'і':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
-            #if text[symb] in semisoft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
-        #if text[symb + 1] == 'j':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "´" + 'j')
-            #if text[symb] in semisoft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "’" + 'j')
-        #if text[symb + 1] == ' ' and text[symb + 2] == 'j':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
-        # if text[symb] in semisoft:
-        # text = text.replace(
-        # text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
-        #if text[symb + 1] == 'й':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "´" + 'й')
-            #if text[symb] in semisoft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "’" + 'й')
-        # if text[symb + 1] == ' ' and text[symb + 2] == 'й':
-        # if text[symb] in soft:
-        # text = text.replace(
-        # text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
-        # if text[symb] in semisoft:
-        # text = text.replace(
-        # text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
+        if text[symb + 1] == ' ' and text[symb + 2] == 'і':
+            if text[symb] in soft:
+                text = text.replace(
+                    text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
+            if text[symb] in semisoft:
+                text = text.replace(
+                    text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
     for symb in range(len(text) - 1):
         if text[symb + 1] == 'ь':
             if text[symb] in soft:
