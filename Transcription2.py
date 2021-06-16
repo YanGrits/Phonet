@@ -1,11 +1,10 @@
 import re
-from simple_colors import *
-from colour import Color
 from typing import List
 
 marks = ['\n', '/', ' ']
 preffs = ['ві', 'пі', 'на', 'пере', 'сере']
-vowels = ['і', 'и', 'n', 'ĩ', 'ũ', 'а', 'о', 'у', 'е', 'ǝ', 'ã', 'õ', 'ỹ', 'ẽ', 'ǝ̃']
+vowels = ['і', 'и', 'І', 'И', 'ĩ', 'и̃', 'ɴ', 'ɴ́', 'Ĩ', 'Ṹ', 'а', 'о', 'А', 'О', 'у', 'е', 'У', 'Е', 'ã', 'õ', 'Ã', 'Õ', 'ỹ', 'ẽ', 'Ỹ́', 'Ẽ', 'ə', 'ǝ̃']
+    #['і', 'и', 'n', 'ĩ', 'ũ', 'а', 'о', 'у', 'е', 'ǝ', 'ã', 'õ', 'ỹ', 'ẽ', 'ǝ̃']
 cons = ['р', 'д', 'ӡ', 'з', 'л', 'н', 'с', 'т', 'ц', 'б', 'в', 'г',
         'ґ', 'Ԫ', 'ж', 'к', 'м', 'п', 'ф', 'х', 'ч', 'ш', 'j', 'й']
 soft = ['р', 'д', 'л', 'н', 'т', 'ӡ', 'з', 'с', 'ц']
@@ -156,7 +155,7 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
         # ї, щ
         if text[symb] == 'щ':
             text = text.replace(text[symb], 'ш' + 'ч')
-        if text[symb] == 'ї':
+        if text[symb] == 'ї'.lower():
             text = text.replace(text[symb], 'j' + 'і')
             if text[symb - 1] == "'":
                 text = text.replace(
@@ -269,51 +268,82 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                 text = text.replace(
                     text[symb] + text[symb + 1], text[symb] + 'j' + 'е')
 
-    for symb in range(len(text) - 1):
-        # пом'якшення
-        if text[symb + 1] == 'і':
+        if text[symb + 1] == 'Я':
+            if text[symb] == "'":
+                text = text.replace(
+                    text[symb] + text[symb + 1], "" + 'j' + 'А')
             if text[symb] in soft:
                 text = text.replace(
-                    text[symb] + text[symb + 1], text[symb] + "´" + 'і')
+                    text[symb] + text[symb + 1], text[symb] + "´" + 'А')
             if text[symb] in semisoft:
                 text = text.replace(
-                    text[symb] + text[symb + 1], text[symb] + "’" + 'і')
+                    text[symb] + text[symb + 1], text[symb] + "’" + 'А')
+            if text[symb] in vowels or text[symb] in marks:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + 'j' + 'А')
+            if text[symb] == 'ь':
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + 'j' + 'А')
+        if text[symb + 1] == 'Ю':
+            if text[symb] == "'":
+                text = text.replace(
+                    text[symb] + text[symb + 1], "" + 'j' + 'У')
+            if text[symb] in soft:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + "´" + 'У')
+            if text[symb] in semisoft:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + "’" + 'У')
+            if text[symb] in vowels or text[symb] in marks:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + 'j' + 'У')
+            if text[symb] == 'ь':
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + 'j' + 'У')
+        if text[symb + 1] == 'Є':
+            if text[symb] == "'":
+                text = text.replace(
+                    text[symb] + text[symb + 1], "" + 'j' + 'Е')
+            if text[symb] in soft:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + "´" + 'Е')
+            if text[symb] in semisoft:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + "’" + 'Е')
+            if text[symb] in vowels or text[symb] in marks:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + 'j' + 'Е')
+            if text[symb] == 'ь':
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + 'j' + 'Е')
+
+    # наближення голосних
+    if pickedLetters != '':
+        for symb in text:
+            if symb.islower():
+                if symb == 'е':
+                    text = text.replace(symb, 'ə')
+                if symb == 'и':
+                    text = text.replace(symb, 'ɴ')
+    #text = re.sub(r'о\w+˚+У', 'ŏ', text)
+
+    for symb in range(len(text) - 1):
+        # пом'якшення
+        if text[symb + 1] == 'і'.lower():
+            if text[symb] in soft:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + "´" + text[symb + 1])
+            if text[symb] in semisoft:
+                text = text.replace(
+                    text[symb] + text[symb + 1], text[symb] + "’" + text[symb + 1])
     #for symb in range(len(text) - 1):
         #if text[symb + 1] == ' ' and text[symb + 2] == 'і':
             #if text[symb] in soft:
                 #text = text.replace(
-                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
+                    #[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
             #if text[symb] in semisoft:
                 #text = text.replace(
                     #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
-        #if text[symb + 1] == 'j':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "´" + 'j')
-            #if text[symb] in semisoft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "’" + 'j')
-        #if text[symb + 1] == ' ' and text[symb + 2] == 'j':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
-        # if text[symb] in semisoft:
-        # text = text.replace(
-        # text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
-        #if text[symb + 1] == 'й':
-            #if text[symb] in soft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "´" + 'й')
-            #if text[symb] in semisoft:
-                #text = text.replace(
-                    #text[symb] + text[symb + 1], text[symb] + "’" + 'й')
-        # if text[symb + 1] == ' ' and text[symb + 2] == 'й':
-        # if text[symb] in soft:
-        # text = text.replace(
-        # text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "´" + text[symb + 1] + text[symb + 2])
-        # if text[symb] in semisoft:
-        # text = text.replace(
-        # text[symb] + text[symb + 1] + text[symb + 2], text[symb] + "’" + text[symb + 1] + text[symb + 2])
     for symb in range(len(text) - 1):
         if text[symb + 1] == 'ь':
             if text[symb] in soft:
@@ -324,7 +354,7 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                     text[symb] + text[symb + 1], text[symb] + "’" + '')
 
     for symb in range(len(text) - 1):
-        # асиміляція за дзвінкістю
+        # асиміляція за дзвінкістю !! мйяк поменятьместами !!
         if text[symb] in voice:
             if text[symb - 1] == 'п':
                 text = text.replace(
@@ -375,11 +405,11 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                 text = text.replace(
                     text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'д' + text[symb - 2] + text[symb - 1] + text[symb])
-            if text[symb - 3] == 'т' and text[symb - 2] == ":" and text[symb - 1] == "´":
+            if text[symb - 3] == 'т' and text[symb - 2] == "´" and text[symb - 1] == ":":
                 text = text.replace(
                     text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'д' + text[symb - 2] + text[symb - 1] + text[symb])
-            if text[symb - 4] == 'т' and text[symb - 3] == ":" and text[symb - 2] == "´" and text[symb - 1] == " ":
+            if text[symb - 4] == 'т' and text[symb - 3] == "´" and text[symb - 2] == ":" and text[symb - 1] == " ":
                 text = text.replace(
                     text[symb - 4] + text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'д' + text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb])
@@ -404,11 +434,11 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                 text = text.replace(
                     text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'ӡ' + text[symb - 2] + text[symb - 1] + text[symb])
-            if text[symb - 3] == 'ц' and text[symb - 2] == ":" and text[symb - 1] == "´":
+            if text[symb - 3] == 'ц' and text[symb - 2] == "´" and text[symb - 1] == ":":
                 text = text.replace(
                     text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'ӡ' + text[symb - 2] + text[symb - 1] + text[symb])
-            if text[symb - 4] == 'ц' and text[symb - 3] == ":" and text[symb - 2] == "´" and text[symb - 1] == " ":
+            if text[symb - 4] == 'ц' and text[symb - 3] == "´" and text[symb - 2] == ":" and text[symb - 1] == " ":
                 text = text.replace(
                     text[symb - 4] + text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'ӡ' + text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb])
@@ -433,11 +463,11 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                 text = text.replace(
                     text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'з' + text[symb - 2] + text[symb - 1] + text[symb])
-            if text[symb - 3] == 'с' and text[symb - 2] == ":" and text[symb - 1] == "´":
+            if text[symb - 3] == 'с' and text[symb - 2] == "´" and text[symb - 1] == ":":
                 text = text.replace(
                     text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'з' + text[symb - 2] + text[symb - 1] + text[symb])
-            if text[symb - 4] == 'с' and text[symb - 3] == ":" and text[symb - 2] == "´" and text[symb - 1] == " ":
+            if text[symb - 4] == 'с' and text[symb - 3] == "´" and text[symb - 2] == ":" and text[symb - 1] == " ":
                 text = text.replace(
                     text[symb - 4] + text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
                     'з' + text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb])
@@ -514,7 +544,10 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
             if text[symb - 2] == 'д' and text[symb - 1] == " ":
                 text = text.replace(
                     text[symb - 2] + text[symb - 1] + text[symb], 'ӡ' + text[symb - 1] + text[symb])
-
+            if text[symb - 3] == 'д' and text[symb - 2] == "´" and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 3], text[symb - 2] + text[symb - 1] + text[symb],
+                    'ӡ' + text[symb - 2] + text[symb - 1] + text[symb])
 
             if text[symb - 1] == 'т':
                 text = text.replace(
@@ -522,18 +555,68 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
             if text[symb - 2] == 'т' and text[symb - 1] == "´":
                 text = text.replace(
                     text[symb - 2] + text[symb - 1] + text[symb], 'ц' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'т' and text[symb - 1] == ":":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'ц' + text[symb - 1] + text[symb])
             if text[symb - 2] == 'т' and text[symb - 1] == " ":
                 text = text.replace(
                     text[symb - 2] + text[symb - 1] + text[symb], 'ц' + text[symb - 1] + text[symb])
+            if text[symb - 3] == 'т' and text[symb - 2] == "´" and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 3], text[symb - 2] + text[symb - 1] + text[symb],
+                    'ц' + text[symb - 2] + text[symb - 1] + text[symb])
+
             if text[symb - 1] == 'ж':
                 text = text.replace(
                     text[symb - 1] + text[symb], 'з' + text[symb])
+            if text[symb - 2] == 'ж' and text[symb - 1] == "’":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'з' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'ж' and text[symb - 1] == ":":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'з' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'ж' and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'з' + text[symb - 1] + text[symb])
+
             if text[symb - 1] == 'ш':
                 text = text.replace(
                     text[symb - 1] + text[symb], 'с' + text[symb])
+            if text[symb - 2] == 'ш' and text[symb - 1] == "’":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'с' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'ш' and text[symb - 1] == ":":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'с' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'ш' and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'с' + text[symb - 1] + text[symb])
+            if text[symb - 3] == 'ш' and text[symb - 2] == "’" and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 3] + text[symb - 2] + text[symb - 1] + text[symb],
+                    'с' + text[symb - 2] + text[symb - 1] + text[symb])
+
             if text[symb - 1] == 'ч':
                 text = text.replace(
                     text[symb - 1] + text[symb], 'ц' + text[symb])
+            if text[symb - 2] == 'ч' and text[symb - 1] == "’":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'ц' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'ч' and text[symb - 1] == ":":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'ц' + text[symb - 1] + text[symb])
+            if text[symb - 2] == 'ч' and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 2] + text[symb - 1] + text[symb], 'ц' + text[symb - 1] + text[symb])
+            if text[symb - 3] == 'ч' and text[symb - 2] == "’" and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 3], text[symb - 2] + text[symb - 1] + text[symb],
+                    'ц' + text[symb - 2] + text[symb - 1] + text[symb])
+            if text[symb - 3] == 'ч' and text[symb - 2] == ":" and text[symb - 1] == " ":
+                text = text.replace(
+                    text[symb - 3], text[symb - 2] + text[symb - 1] + text[symb],
+                    'ц' + text[symb - 2] + text[symb - 1] + text[symb])
+
         if text[symb] in shshsh:
             if text[symb - 1] == 'д':
                 text = text.replace(
@@ -586,7 +669,7 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                         '' + '' + text[symb] + ':' + text[symb + 1])
 
     for symb in range(len(text) - 1):
-        # асиміляція за м'якістю    !!!! Р Й ????
+        # асиміляція за м'якістю
         if text[symb] in soft[1:] and (text[symb + 1] + text[symb + 2]) in softy:
             text = text.replace(text[symb] + text[symb + 1] + text[symb + 2],
                                 text[symb] + "´" + text[symb + 1] + text[symb + 2])
@@ -598,18 +681,6 @@ def transcript_the_text_phonematic(the_text: str, pickedLetters: str) -> str:
                                 text[symb] + "´" + text[symb + 1] + text[symb + 2])
 
 
-
-
-    if pickedLetters != '':
-        for symb in text:
-            if symb.islower():
-                if symb == 'е':
-                    text = text.replace(symb, 'ə')
-                if symb == 'и':
-                    text = text.replace(symb, 'n')
-    #text = re.sub(r'о\w+˚+У', 'ŏ', text)
-
-    print(marks[:1])
     text = re.sub(r'    /', '', text)
     text = re.sub(r'/    ', '', text)
 
